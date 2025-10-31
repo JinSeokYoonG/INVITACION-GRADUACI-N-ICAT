@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Updated title to Graduación -->
+  <title>Graduación Tercero Básico 2025 · ICAT Coatepeque</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  
+  <style>
+    :root {
+      --bg: #0a0a0f;
+      --bg-gradient-start: #0f0f1a;
+      --bg-gradient-end: #1a1520;
+      --text: #f5f5f5;
+      --text-muted: #b8b8b8;
+      --accent: #ffd700;
+      --accent-dark: #d4af37;
+      --accent-light: #ffe44d;
+      --border: #2a2a35;
+      --diploma-bg: #1a1520;
+      --diploma-edge: #d4af37;
+      --card-bg: #15151f;
+      --card-shadow: rgba(255, 215, 0, 0.15);
+      transition: background-color 0.4s ease, color 0.4s ease;
+    }
+
+    html[data-theme="light"] {
+      --bg: #faf8f0;
+      --bg-gradient-start: #fffef8;
+      --bg-gradient-end: #fff9e6;
+      --text: #1a1a1a;
+      --text-muted: #6b6b6b;
+      --border: #e8e0c8;
+      --diploma-bg: #fffef8;
+      --diploma-edge: #d4af37;
+      --card-bg: #ffffff;
+      --card-shadow: rgba(212, 175, 55, 0.2);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body,
+    a,
+    button,
+    #diploma-wrapper,
+    .music-control,
+    .theme-toggle {
+      cursor: none;
+    }
+
+    #cursor-dot {
+      position: fixed;
+      width: 8px;
+      height: 8px;
+      background-color: var(--accent);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      z-index: 10001;
+      transition: opacity 0.2s ease;
+      box-shadow: 0 0 10px var(--accent);
+    }
+
+    #cursor-outline {
+      position: fixed;
+      width: 40px;
+      height: 40px;
+      border: 2px solid var(--accent-dark);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      z-index: 10001;
+      transition: all 0.1s ease-out;
+    }
+
+    body.cursor-hover #cursor-outline {
+      transform: translate(-50%, -50%) scale(1.5);
+      background-color: rgba(255, 215, 0, 0.2);
+    }
+
+    body.cursor-hover #cursor-dot {
+      opacity: 0;
+    }
+
+    @media (max-width: 768px) {
+      #cursor-dot,
+      #cursor-outline {
+        display: none;
+      }
+      body {
+        cursor: auto;
+      }
+      a,
+      button,
+      #diploma-wrapper,
+      .music-control,
+      .theme-toggle {
+        cursor: pointer;
+      }
+    }
+
+    body {
+      font-family: "Inter", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+      min-height: 100vh;
+      position: relative;
+    }
+
+    .stars-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .star {
+      position: absolute;
+      background: var(--accent);
+      border-radius: 50%;
+      box-shadow: 0 0 10px var(--accent), 0 0 20px var(--accent-light);
+      animation: twinkle 3s infinite ease-in-out;
+    }
+
+    @keyframes twinkle {
+      0%, 100% {
+        opacity: 0.3;
+        transform: scale(1);
+      }
+      50% {
+        opacity: 1;
+        transform: scale(1.2);
+      }
+    }
+
+    .shooting-star {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: var(--accent-light);
+      border-radius: 50%;
+      box-shadow: 0 0 10px var(--accent-light), 0 0 20px var(--accent);
+      animation: shoot 3s linear infinite;
+    }
+
+    @keyframes shoot {
+      0% {
+        transform: translateX(0) translateY(0);
+        opacity: 1;
+      }
+      100% {
+        transform: translateX(-300px) translateY(300px);
+        opacity: 0;
+      }
+    }
+
+    .particle {
+      position: absolute;
+      background: radial-gradient(circle, var(--accent-light), transparent);
+      border-radius: 50%;
+      pointer-events: none;
+      opacity: 0;
+      animation: particleAnimation 15s infinite ease-in-out;
+      box-shadow: 0 0 15px var(--accent);
+    }
+
+    @keyframes particleAnimation {
+      0% {
+        transform: translateY(0) scale(0);
+        opacity: 0;
+      }
+      20% {
+        transform: translateY(-20vh) scale(1);
+        opacity: 0.6;
+      }
+      80% {
+        transform: translateY(80vh) scale(0.5);
+        opacity: 0.3;
+      }
+      100% {
+        transform: translateY(100vh) scale(0);
+        opacity: 0;
+      }
+    }
+
+    #diploma-wrapper {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background-color: var(--bg);
+      z-index: 1000;
+      perspective: 1200px;
+      transition: opacity 1s ease-out 1s;
+    }
+
+    .click-indicator {
+      color: var(--accent);
+      font-family: "Playfair Display", serif;
+      font-size: 1.4rem;
+      font-weight: 600;
+      margin-bottom: 25px;
+      text-align: center;
+      background-image: linear-gradient(-75deg, var(--accent-light) 30%, var(--accent) 50%, var(--accent-dark) 70%);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shimmer 3s infinite linear;
+      text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+    }
+
+    .click-indicator::after {
+      content: "↓";
+      display: block;
+      margin-top: 5px;
+      font-size: 1.5rem;
+      color: var(--accent);
+      -webkit-text-fill-color: initial;
+      animation: bounceArrow 1.5s infinite ease-in-out;
+    }
+
+    @keyframes shimmer {
+      to {
+        background-position: 200% center;
+      }
+    }
+
+    @keyframes bounceArrow {
+      0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+      }
+      40% {
+        transform: translateY(8px);
+      }
+      60% {
+        transform: translateY(4px);
+      }
+    }
+
+    .diploma-container {
+      position: relative;
+      width: 400px;
+      height: 300px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .diploma-scroll {
+      position: relative;
+      width: 350px;
+      height: 250px;
+      background: linear-gradient(135deg, var(--diploma-bg), #1f1a25);
+      border-radius: 8px;
+      box-shadow: 
+        0 10px 40px rgba(255, 215, 0, 0.3),
+        inset 0 2px 10px rgba(255, 215, 0, 0.1),
+        0 0 30px rgba(255, 215, 0, 0.2);
+      transform-style: preserve-3d;
+      transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+      animation: floatDiploma 3s ease-in-out infinite;
+      border: 3px solid var(--diploma-edge);
+    }
+
+    @keyframes floatDiploma {
+      0%, 100% {
+        transform: translateY(0) rotateY(0deg);
+      }
+      50% {
+        transform: translateY(-15px) rotateY(5deg);
+      }
+    }
+
+    .diploma-ribbon {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 80px;
+      height: 100px;
+      z-index: 10;
+    }
+
+    .ribbon-top {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+      border-radius: 50%;
+      box-shadow: 0 4px 20px rgba(255, 215, 0, 0.6), 0 0 40px rgba(255, 215, 0, 0.4);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 2.5rem;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 4px 20px rgba(255, 215, 0, 0.6), 0 0 40px rgba(255, 215, 0, 0.4);
+      }
+      50% {
+        transform: scale(1.05);
+        box-shadow: 0 6px 30px rgba(255, 215, 0, 0.8), 0 0 60px rgba(255, 215, 0, 0.6);
+      }
+    }
+
+    .ribbon-tails {
+      position: absolute;
+      top: 70px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 10px;
+    }
+
+    .ribbon-tail {
+      width: 25px;
+      height: 40px;
+      background: linear-gradient(to bottom, var(--accent), var(--accent-dark));
+      clip-path: polygon(0 0, 100% 0, 50% 100%);
+      animation: sway 2s ease-in-out infinite;
+    }
+
+    .ribbon-tail:nth-child(1) {
+      animation-delay: 0s;
+    }
+
+    .ribbon-tail:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    @keyframes sway {
+      0%, 100% {
+        transform: rotate(0deg);
+      }
+      50% {
+        transform: rotate(5deg);
+      }
+    }
+
+    .diploma-content {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      width: 80%;
+      z-index: 5;
+    }
+
+    .diploma-title {
+      font-family: "Playfair Display", serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+      text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+    }
+
+    .diploma-subtitle {
+      font-family: "Inter", sans-serif;
+      font-size: 1rem;
+      color: var(--text-muted);
+      font-style: italic;
+    }
+
+    .diploma-ornament {
+      position: absolute;
+      font-size: 2rem;
+      opacity: 0.5;
+      color: var(--accent);
+      text-shadow: 0 0 10px var(--accent);
+    }
+
+    .diploma-ornament.top-left {
+      top: 15px;
+      left: 15px;
+    }
+
+    .diploma-ornament.top-right {
+      top: 15px;
+      right: 15px;
+    }
+
+    .diploma-ornament.bottom-left {
+      bottom: 15px;
+      left: 15px;
+    }
+
+    .diploma-ornament.bottom-right {
+      bottom: 15px;
+      right: 15px;
+    }
+
+    #diploma-wrapper.open {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    #diploma-wrapper.open .diploma-scroll {
+      transform: rotateY(90deg) scale(0.5);
+      opacity: 0;
+    }
+
+    #diploma-wrapper:hover .diploma-scroll {
+      transform: translateY(-10px) rotateY(-5deg);
+      animation-play-state: paused;
+      box-shadow: 
+        0 15px 50px rgba(255, 215, 0, 0.4),
+        inset 0 2px 10px rgba(255, 215, 0, 0.2),
+        0 0 50px rgba(255, 215, 0, 0.3);
+    }
+
+    .gala-container {
+      width: 100%;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s ease-out 1.5s;
+      position: relative;
+      z-index: 1;
+    }
+
+    .gala-container.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .gala-header {
+      text-align: center;
+      padding: 2rem 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .gala-logo {
+      width: 150px;
+      height: 150px;
+      margin: 0 auto 1.5rem;
+      border-radius: 50%;
+      object-fit: cover;
+      box-shadow: 0 8px 30px rgba(255, 215, 0, 0.4), 0 0 50px rgba(255, 215, 0, 0.2);
+      border: 5px solid var(--accent);
+      display: block;
+    }
+
+    .gala-title {
+      font-family: "Playfair Display", serif;
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+      line-height: 1.2;
+      text-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+    }
+
+    .gala-subtitle {
+      font-family: "Inter", sans-serif;
+      font-size: clamp(1rem, 2.5vw, 1.2rem);
+      color: var(--text-muted);
+      font-style: italic;
+      margin-bottom: 1.5rem;
+    }
+
+    .decorative-line {
+      width: 100px;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      margin: 0 auto;
+      box-shadow: 0 0 10px var(--accent);
+    }
+
+    .graduation-ornament {
+      text-align: center;
+      font-size: 3rem;
+      margin: 2rem 0;
+      opacity: 0;
+      display: none;
+    }
+
+    .content-section {
+      margin-bottom: 3rem;
+      animation: fadeInUp 0.8s ease-out;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .content-card {
+      background: var(--card-bg);
+      border-radius: 20px;
+      padding: 2.5rem;
+      box-shadow: 0 10px 40px var(--card-shadow), 0 0 30px rgba(255, 215, 0, 0.1);
+      border: 1px solid var(--border);
+      margin-bottom: 2rem;
+    }
+
+    .section-title {
+      font-family: "Playfair Display", serif;
+      font-size: clamp(1.8rem, 4vw, 2.5rem);
+      color: var(--text);
+      margin-bottom: 1.5rem;
+      text-align: center;
+      text-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
+    }
+
+    .section-text {
+      font-size: 1.1rem;
+      line-height: 1.8;
+      color: var(--text-muted);
+      text-align: center;
+      max-width: 700px;
+      margin: 0 auto 1.5rem;
+    }
+
+    .highlight-box {
+      background: linear-gradient(135deg, rgba(255, 215, 0, 0.15), rgba(255, 215, 0, 0.05));
+      border-left: 4px solid var(--accent);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-top: 2rem;
+      box-shadow: 0 0 20px rgba(255, 215, 0, 0.1);
+    }
+
+    .highlight-text {
+      font-size: 1.1rem;
+      color: var(--text);
+      text-align: center;
+      line-height: 1.6;
+    }
+
+    .highlight-text strong {
+      color: var(--accent);
+      font-weight: 700;
+      text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+    }
+
+    .details-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      padding: 1rem;
+    }
+
+    .detail-item {
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 2rem 1.5rem;
+      text-align: center;
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 20px var(--card-shadow), 0 0 20px rgba(255, 215, 0, 0.05);
+      transition: all 0.3s ease;
+    }
+
+    .detail-item:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 8px 30px var(--card-shadow), 0 0 40px rgba(255, 215, 0, 0.2);
+      border-color: var(--accent-light);
+    }
+
+    .detail-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      display: none;
+    }
+
+    .detail-item h3 {
+      font-family: "Inter", sans-serif;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--accent);
+      margin-bottom: 0.75rem;
+      font-weight: 600;
+    }
+
+    .detail-item p {
+      font-family: "Playfair Display", serif;
+      font-size: 1.3rem;
+      color: var(--text);
+      font-weight: 600;
+      line-height: 1.4;
+    }
+
+    .location-name {
+      font-family: "Playfair Display", serif;
+      font-size: 1.8rem;
+      color: var(--accent);
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      text-align: center;
+      text-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+    }
+
+    .location-address {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+
+    .map-wrapper {
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px var(--card-shadow), 0 0 30px rgba(255, 215, 0, 0.1);
+      margin-top: 2rem;
+      border: 2px solid var(--border);
+    }
+
+    .map-wrapper iframe {
+      width: 100%;
+      display: block;
+    }
+
+    footer {
+      display: none;
+      text-align: center;
+      padding: 3rem 1rem 2rem;
+      border-top: 1px solid var(--border);
+      margin-top: 3rem;
+      width: 100%;
+      opacity: 0;
+      transition: all 0.8s ease-out 1.5s;
+      position: relative;
+      z-index: 1;
+    }
+
+    footer.visible {
+      display: block;
+      opacity: 1;
+    }
+
+    .footer-content img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+      margin-bottom: 1rem;
+    }
+
+    .footer-text {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    .music-control,
+    .theme-toggle {
+      position: fixed;
+      bottom: 1.5rem;
+      background: var(--accent);
+      color: #0a0a0f;
+      width: 55px;
+      height: 55px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 4px 20px rgba(255, 215, 0, 0.4), 0 0 30px rgba(255, 215, 0, 0.3);
+      transition: all 0.5s ease;
+      z-index: 990;
+      opacity: 0;
+      transform: scale(0.5) translateY(50px);
+      pointer-events: none;
+    }
+
+    .music-control {
+      right: 1.5rem;
+    }
+
+    .theme-toggle {
+      right: 6rem;
+    }
+
+    .music-control.visible,
+    .theme-toggle.visible {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+      pointer-events: all;
+    }
+
+    .music-control:hover,
+    .theme-toggle:hover {
+      background: var(--accent-dark);
+      transform: scale(1.1) translateY(0);
+      box-shadow: 0 6px 30px rgba(255, 215, 0, 0.6), 0 0 50px rgba(255, 215, 0, 0.5);
+    }
+
+    .music-control svg,
+    .theme-toggle svg {
+      width: 26px;
+      height: 26px;
+      fill: currentColor;
+    }
+
+    .theme-transition-wave {
+      position: fixed;
+      background-color: var(--bg);
+      border-radius: 50%;
+      transform: scale(0);
+      pointer-events: none;
+      z-index: 10000;
+      width: 1px;
+      height: 1px;
+      transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+      top: 50%;
+      left: 50%;
+    }
+
+    .graduation-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+      color: #0a0a0f;
+      padding: 0.5rem 1.5rem;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin-top: 1rem;
+      box-shadow: 0 4px 20px rgba(255, 215, 0, 0.4);
+    }
+
+    .section-divider {
+      text-align: center;
+      margin: 3rem 0;
+      position: relative;
+    }
+
+    .section-divider::before,
+    .section-divider::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      width: 30%;
+      height: 2px;
+      background: linear-gradient(to right, transparent, var(--accent), transparent);
+      box-shadow: 0 0 10px var(--accent);
+    }
+
+    .section-divider::before {
+      left: 0;
+    }
+
+    .section-divider::after {
+      right: 0;
+    }
+
+    .section-divider-icon {
+      font-size: 2rem;
+      display: none;
+      padding: 0 1rem;
+      background: var(--bg);
+    }
+
+    @media (max-width: 768px) {
+      .diploma-container {
+        width: 350px;
+        height: 280px;
+      }
+
+      .diploma-scroll {
+        width: 300px;
+        height: 220px;
+      }
+
+      .diploma-title {
+        font-size: 1.4rem;
+      }
+
+      .diploma-subtitle {
+        font-size: 0.9rem;
+      }
+
+      .gala-logo {
+        width: 120px;
+        height: 120px;
+      }
+
+      .gala-title {
+        font-size: 1.8rem;
+      }
+
+      .content-card {
+        padding: 1.5rem;
+      }
+
+      .details-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+      }
+
+      .detail-item {
+        padding: 1.5rem 1rem;
+      }
+
+      .detail-icon {
+        font-size: 2.5rem;
+      }
+
+      .theme-toggle {
+        right: 5.5rem;
+      }
+
+      .graduation-ornament {
+        font-size: 2rem;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .diploma-container {
+        width: 300px;
+        height: 250px;
+      }
+
+      .diploma-scroll {
+        width: 260px;
+        height: 190px;
+      }
+
+      .diploma-title {
+        font-size: 1.2rem;
+      }
+
+      .ribbon-top {
+        width: 60px;
+        height: 60px;
+        font-size: 2rem;
+      }
+
+      .gala-container {
+        padding: 1rem 0.5rem;
+      }
+
+      .details-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .section-title {
+        font-size: 1.5rem;
+      }
+
+      .section-text {
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="stars-container" id="starsContainer"></div>
+
+  <div class="particle" style="width:10px; height:10px; left: 10%; animation-delay: 0s;"></div>
+  <div class="particle" style="width:15px; height:15px; left: 30%; animation-delay: 2s;"></div>
+  <div class="particle" style="width:12px; height:12px; left: 50%; animation-delay: 4s;"></div>
+  <div class="particle" style="width:8px; height:8px; left: 70%; animation-delay: 6s;"></div>
+  <div class="particle" style="width:18px; height:18px; left: 90%; animation-delay: 8s;"></div>
+  <div class="particle" style="width:11px; height:11px; left: 20%; animation-delay: 10s;"></div>
+  <div class="particle" style="width:9px; height:9px; left: 40%; animation-delay: 12s;"></div>
+  <div class="particle" style="width:14px; height:14px; left: 60%; animation-delay: 14s;"></div>
+  <div class="particle" style="width:7px; height:7px; left: 80%; animation-delay: 1s;"></div>
+  <div class="particle" style="width:16px; height:16px; left: 25%; animation-delay: 3s;"></div>
+
+  <!-- Replaced diploma wrapper with graduation cap -->
+  <div id="diploma-wrapper">
+    <div class="click-indicator">Pulsa para lanzar tu birrete</div>
+    <div class="cap-container">
+      <div class="graduation-cap">
+        <!-- Cap top (mortarboard) -->
+        <div class="cap-top">
+          <div class="cap-button"></div>
+        </div>
+        <!-- Tassel -->
+        <div class="tassel">
+          <div class="tassel-string"></div>
+          <div class="tassel-end"></div>
+        </div>
+        <!-- Cap base -->
+        <div class="cap-base"></div>
+        
+        <!-- Floating text -->
+        <div class="cap-text">
+          <div class="cap-title">Graduación</div>
+          <div class="cap-subtitle">Tercero Básico 2025</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="theme-transition-wave" id="wave-overlay"></div>
+  
+  <div id="cursor-dot"></div>
+  <div id="cursor-outline"></div>
+
+  <div class="gala-container" id="gala-container">
+    <header class="gala-header">
+      <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo%20icat.png-ciJNVIKi72sDKo3faQPR95uJYivXoU.jpeg" 
+           alt="ICAT Logo"
+           class="gala-logo">
+      <!-- Updated title to Graduación -->
+      <h1 class="gala-title">Graduación Tercero Básico</h1>
+      <p class="gala-subtitle">Instituto ICAT Coatepeque</p>
+      <div class="graduation-badge">Promoción 2025</div>
+      <div class="decorative-line"></div>
+    </header>
+
+    <main class="gala-content">
+
+      <section class="content-section">
+        <div class="content-card">
+          <!-- Updated content to be more nostalgic -->
+          <h2 class="section-title">Un Momento Inolvidable</h2>
+          <p class="section-text">
+            Después de años de esfuerzo, dedicación y aprendizaje, ha llegado el momento de celebrar 
+            juntos este logro tan especial. Te invitamos a ser parte de nuestra ceremonia de graduación, 
+            donde cerraremos un capítulo lleno de recuerdos y abriremos las puertas hacia nuevos horizontes.
+          </p>
+          <div class="highlight-box">
+            <p class="highlight-text">
+              Este día marca el final de una etapa y el comienzo de nuevos sueños. 
+              <strong>Cada momento compartido</strong> ha sido parte de este camino que hoy celebramos 
+              con orgullo y nostalgia.
+            </p>
+          </div>
+          <div class="highlight-box" style="margin-top: 1.5rem;">
+            <p class="highlight-text">
+              Acompáñanos en esta ceremonia donde honraremos los logros, los desafíos superados y 
+              las amistades forjadas. <strong>Tu presencia hará este día aún más especial.</strong>
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <div class="section-divider">
+        <span class="section-divider-icon"></span>
+      </div>
+
+      <section class="content-section">
+        <div class="content-card">
+          <h2 class="section-title">Detalles del Evento</h2>
+          <div class="details-grid">
+            <div class="detail-item">
+              <div class="detail-icon"></div>
+              <h3>Fecha</h3>
+              <!-- Updated date to November 22 -->
+              <p>Viernes<br>22 de Noviembre 2025</p>
+            </div>
+            <div class="detail-item">
+              <div class="detail-icon"></div>
+              <h3>Horario</h3>
+              <!-- Updated time to 9:00 AM -->
+              <p>9:00 AM</p>
+            </div>
+            <div class="detail-item">
+              <div class="detail-icon"></div>
+              <h3>Lugar</h3>
+              <!-- Updated venue to Salón Coatexpo -->
+              <p>Salón<br>Coatexpo</p>
+            </div>
+            <div class="detail-item">
+              <div class="detail-icon"></div>
+              <h3>Vestimenta</h3>
+              <p>Formal<br>Elegante</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="section-divider">
+        <span class="section-divider-icon"></span>
+      </div>
+
+      <section class="content-section">
+        <div class="content-card">
+          <h2 class="section-title">Vistazo al Lugar</h2>
+          <p class="section-text">
+            <!-- Updated venue description -->
+            El Salón Coatexpo es un espacio elegante y acogedor, perfectamente preparado 
+            para celebrar este momento tan especial. Conoce el lugar donde se llevará a cabo 
+            nuestra ceremonia de graduación.
+          </p>
+          <div class="venue-gallery">
+            <div class="venue-image">
+              <img src="https://raw.githubusercontent.com/JinSeokYoonG/CLAUSURA/main/lugar1.jpg" 
+                   alt="Interior del salón"
+                   loading="lazy">
+            </div>
+            <div class="venue-image">
+              <img src="https://raw.githubusercontent.com/JinSeokYoonG/CLAUSURA/main/lugar2.jpg" 
+                   alt="Entrada del salón"
+                   loading="lazy">
+            </div>
+            <div class="venue-image">
+              <img src="https://raw.githubusercontent.com/JinSeokYoonG/CLAUSURA/main/lugar3.jpg" 
+                   alt="Montaje del salón"
+                   loading="lazy">
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="section-divider">
+        <span class="section-divider-icon"></span>
+      </div>
+
+      <section class="content-section">
+        <div class="content-card">
+          <h2 class="section-title">Galería de Recuerdos</h2>
+          <!-- Updated gallery description to be more nostalgic -->
+          <p class="section-text">
+            Momentos que quedarán por siempre en nuestros corazones. Cada fotografía cuenta una 
+            historia de crecimiento, amistad y sueños compartidos durante este viaje inolvidable.
+          </p>
+          <div class="memories-gallery">
+            <div class="memory-item">
+              <img src="https://raw.githubusercontent.com/JinSeokYoonG/CLAUSURA/main/imagen1.jpg" 
+                   alt="Recuerdo 1"
+                   loading="lazy">
+            </div>
+            <div class="memory-item">
+              <img src="https://raw.githubusercontent.com/JinSeokYoonG/CLAUSURA/main/imagen2.jpg" 
+                   alt="Recuerdo 2"
+                   loading="lazy">
+            </div>
+            <div class="memory-item">
+              <img src="https://raw.githubusercontent.com/JinSeokYoonG/CLAUSURA/main/imagen3.jpg" 
+                   alt="Recuerdo 3"
+                   loading="lazy">
+            </div>
+            <div class="memory-item">
+              <img src="https://raw.githubusercontent.com/JinSeokYoonG/CLAUSURA/main/imagen4.jpg" 
+                   alt="Recuerdo 4"
+                   loading="lazy">
+            </div>
+            <div class="memory-item">
+              <img src="https://raw.githubusercontent.com/JinSeokYoonG/CLAUSURA/main/imagen5.jpg" 
+                   alt="Recuerdo 5"
+                   loading="lazy">
+            </div>
+            <div class="memory-item">
+              <img src="https://raw.githubusercontent.com/JinSeokYoonG/CLAUSURA/main/imagen6.jpg" 
+                   alt="Recuerdo 6"
+                   loading="lazy">
+            </div>
+            <div class="memory-item">
+              <img src="https://raw.githubusercontent.com/JinSeokYoonG/CLAUSURA/main/imagen7.jpg" 
+                   alt="Recuerdo 7"
+                   loading="lazy">
+            </div>
+            <div class="memory-item">
+              <img src="https://raw.githubusercontent.com/JinSeokYoonG/CLAUSURA/main/imagen8.jpg" 
+                   alt="Recuerdo 8"
+                   loading="lazy">
+            </div>
+            <div class="memory-item">
+              <img src="https://raw.githubusercontent.com/JinSeokYoonG/CLAUSURA/main/imagen9.jpg" 
+                   alt="Recuerdo 9"
+                   loading="lazy">
+            </div>
+            <div class="memory-item">
+              <img src="https://raw.githubusercontent.com/JinSeokYoonG/CLAUSURA/main/imagen10.jpg" 
+                   alt="Recuerdo 10"
+                   loading="lazy">
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="section-divider">
+        <span class="section-divider-icon"></span>
+      </div>
+
+      <section class="content-section">
+        <div class="content-card">
+          <h2 class="section-title">Ubicación</h2>
+          <!-- Updated venue name -->
+          <p class="location-name">Salón Coatexpo</p>
+          <p class="location-address">Coatepeque, Quetzaltenango</p>
+          <div class="map-wrapper">
+            <!-- Updated Google Maps embed with new location -->
+            <iframe 
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3862.0!2d-91.8239999!3d14.6933333!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTTCsDQxJzM2LjAiTiA5McKwNDknMjYuNCJX!5e0!3m2!1ses-419!2sgt!4v1729388836155!5m2!1ses-419!2sgt" 
+              width="100%" 
+              height="350" 
+              style="border:0;" 
+              allowfullscreen="" 
+              loading="lazy" 
+              referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <footer class="footer" id="footer">
+    <div class="footer-content">
+      <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/4-9UOWNnE1idVp6aDYN73sXCtSQADQcy.png" 
+           alt="Creatiguate Logo" 
+           class="creatiguate-logo">
+      <p class="footer-text">Diseño web profesional por Creatiguate©</p>
+    </div>
+  </footer>
+
+  <!-- Lightbox for image viewing -->
+  <div class="lightbox" id="lightbox">
+    <div class="lightbox-content">
+      <div class="lightbox-close" id="lightbox-close">×</div>
+      <img id="lightbox-img" src="/placeholder.svg" alt="Vista ampliada">
+    </div>
+  </div>
+
+  <audio id="backgroundMusic" loop>
+    <source src="https://raw.githubusercontent.com/JinSeokYoonG/CLAUSURA/main/Coldplay%20-%20Yellow%20(Official%20Video)%20-%20Coldplay.mp3" type="audio/mpeg">
+  </audio>
+
+  <div class="music-control" id="musicControl" title="Silenciar/Activar música">
+    <svg id="volumeUpIcon" viewBox="0 0 24 24" style="display:none;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+    <svg id="volumeOffIcon" viewBox="0 0 24 24" style="display:none;"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/></svg>
+  </div>
+  
+  <div class="theme-toggle" id="themeToggle" title="Cambiar tema">
+    <svg id="themeIconSun" viewBox="0 0 24 24"><path d="M12 9c-1.65 0-3 1.35-3 3s1.35 3 3 3 3-1.35 3-3-1.35-3-3-3zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8z"/></svg>
+    <svg id="themeIconMoon" viewBox="0 0 24 24" style="display:none;"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-3.31 0-6-2.69-6-6 0-1.82.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z"/></svg>
+  </div>
+
+  <script src="script.js"></script>
+
+</body>
+</html>

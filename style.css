@@ -1,0 +1,1154 @@
+:root {
+  --bg: #0a0a0f;
+  --bg-gradient-start: #0f0f1a;
+  --bg-gradient-end: #1a1520;
+  --text: #f5f5f5;
+  --text-muted: #b8b8b8;
+  --accent: #ffd700;
+  --accent-dark: #d4af37;
+  --accent-light: #ffe44d;
+  --border: #2a2a35;
+  --diploma-bg: #1a1520;
+  --diploma-edge: #d4af37;
+  --card-bg: #15151f;
+  --card-shadow: rgba(255, 215, 0, 0.15);
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+html[data-theme="light"] {
+  --bg: #faf8f0;
+  --bg-gradient-start: #fffef8;
+  --bg-gradient-end: #fff9e6;
+  --text: #1a1a1a;
+  --text-muted: #6b6b6b;
+  --border: #e8e0c8;
+  --diploma-bg: #fffef8;
+  --diploma-edge: #d4af37;
+  --card-bg: #ffffff;
+  --card-shadow: rgba(212, 175, 55, 0.2);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body,
+a,
+button,
+#diploma-wrapper,
+.music-control,
+.theme-toggle {
+  cursor: none;
+}
+
+#cursor-dot {
+  position: fixed;
+  width: 8px;
+  height: 8px;
+  background-color: var(--accent);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 10001;
+  transition: opacity 0.2s ease;
+  box-shadow: 0 0 10px var(--accent);
+}
+
+#cursor-outline {
+  position: fixed;
+  width: 40px;
+  height: 40px;
+  border: 2px solid var(--accent-dark);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 10001;
+  transition: all 0.1s ease-out;
+}
+
+body.cursor-hover #cursor-outline {
+  transform: translate(-50%, -50%) scale(1.5);
+  background-color: rgba(255, 215, 0, 0.2);
+}
+
+body.cursor-hover #cursor-dot {
+  opacity: 0;
+}
+
+@media (max-width: 768px) {
+  #cursor-dot,
+  #cursor-outline {
+    display: none;
+  }
+  body {
+    cursor: auto;
+  }
+  a,
+  button,
+  #diploma-wrapper,
+  .music-control,
+  .theme-toggle {
+    cursor: pointer;
+  }
+}
+
+body {
+  font-family: "Inter", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  overflow-x: hidden;
+  min-height: 100vh;
+  position: relative;
+}
+
+/* Stars and particles background */
+.stars-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.star {
+  position: absolute;
+  background: var(--accent);
+  border-radius: 50%;
+  box-shadow: 0 0 10px var(--accent), 0 0 20px var(--accent-light);
+  animation: twinkle 3s infinite ease-in-out;
+}
+
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
+
+.shooting-star {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: var(--accent-light);
+  border-radius: 50%;
+  box-shadow: 0 0 10px var(--accent-light), 0 0 20px var(--accent);
+  animation: shoot 3s linear infinite;
+}
+
+@keyframes shoot {
+  0% {
+    transform: translateX(0) translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(-300px) translateY(300px);
+    opacity: 0;
+  }
+}
+
+.particle {
+  position: absolute;
+  background: radial-gradient(circle, var(--accent-light), transparent);
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0;
+  animation: particleAnimation 15s infinite ease-in-out;
+  box-shadow: 0 0 15px var(--accent);
+}
+
+@keyframes particleAnimation {
+  0% {
+    transform: translateY(0) scale(0);
+    opacity: 0;
+  }
+  20% {
+    transform: translateY(-20vh) scale(1);
+    opacity: 0.6;
+  }
+  80% {
+    transform: translateY(80vh) scale(0.5);
+    opacity: 0.3;
+  }
+  100% {
+    transform: translateY(100vh) scale(0);
+    opacity: 0;
+  }
+}
+
+/* Diploma wrapper and animations */
+#diploma-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--bg);
+  z-index: 1000;
+  perspective: 1200px;
+  transition: opacity 1s ease-out 1s;
+}
+
+.click-indicator {
+  color: var(--accent);
+  font-family: "Playfair Display", serif;
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-bottom: 25px;
+  text-align: center;
+  background-image: linear-gradient(-75deg, var(--accent-light) 30%, var(--accent) 50%, var(--accent-dark) 70%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 3s infinite linear;
+  text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+}
+
+.click-indicator::after {
+  content: "↓";
+  display: block;
+  margin-top: 5px;
+  font-size: 1.5rem;
+  color: var(--accent);
+  -webkit-text-fill-color: initial;
+  animation: bounceArrow 1.5s infinite ease-in-out;
+}
+
+@keyframes shimmer {
+  to {
+    background-position: 200% center;
+  }
+}
+
+@keyframes bounceArrow {
+  0%,
+  20%,
+  50%,
+  80%,
+  100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(8px);
+  }
+  60% {
+    transform: translateY(4px);
+  }
+}
+
+/* Replaced diploma styles with graduation cap styles */
+.cap-container {
+  position: relative;
+  width: 400px;
+  height: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  perspective: 1200px;
+}
+
+.graduation-cap {
+  position: relative;
+  width: 250px;
+  height: 250px;
+  transform-style: preserve-3d;
+  animation: floatCap 3s ease-in-out infinite;
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes floatCap {
+  0%,
+  100% {
+    transform: translateY(0) rotateX(15deg) rotateZ(0deg);
+  }
+  50% {
+    transform: translateY(-20px) rotateX(15deg) rotateZ(5deg);
+  }
+}
+
+/* Cap top (mortarboard) */
+.cap-top {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) translateZ(40px);
+  width: 200px;
+  height: 200px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+  box-shadow: 0 10px 40px rgba(255, 215, 0, 0.4), 0 0 60px rgba(255, 215, 0, 0.3), inset 0 -5px 20px rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  transform-style: preserve-3d;
+}
+
+.cap-top::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, transparent 30%, rgba(255, 255, 255, 0.2) 50%, transparent 70%);
+  border-radius: 4px;
+}
+
+.cap-button {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) translateZ(5px);
+  width: 30px;
+  height: 30px;
+  background: radial-gradient(circle, var(--accent-light), var(--accent-dark));
+  border-radius: 50%;
+  box-shadow: 0 4px 15px rgba(255, 215, 0, 0.6);
+}
+
+/* Cap base */
+.cap-base {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) translateZ(0px);
+  width: 120px;
+  height: 80px;
+  background: linear-gradient(180deg, var(--accent-dark), #b8941f);
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  box-shadow: 0 8px 30px rgba(255, 215, 0, 0.4), inset 0 -10px 20px rgba(0, 0, 0, 0.3);
+}
+
+.cap-base::before {
+  content: "";
+  position: absolute;
+  top: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 130px;
+  height: 20px;
+  background: linear-gradient(180deg, var(--accent), var(--accent-dark));
+  border-radius: 50%;
+  box-shadow: 0 2px 10px rgba(255, 215, 0, 0.4);
+}
+
+/* Tassel */
+.tassel {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) translateZ(50px);
+  width: 4px;
+  height: 80px;
+  transform-origin: top center;
+  animation: swayTassel 2s ease-in-out infinite;
+}
+
+@keyframes swayTassel {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) translateZ(50px) rotate(0deg);
+  }
+  50% {
+    transform: translate(-50%, -50%) translateZ(50px) rotate(8deg);
+  }
+}
+
+.tassel-string {
+  width: 4px;
+  height: 50px;
+  background: linear-gradient(to bottom, var(--accent-dark), var(--accent));
+  border-radius: 2px;
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+.tassel-end {
+  position: absolute;
+  bottom: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 30px;
+  height: 30px;
+  background: radial-gradient(circle, var(--accent-light), var(--accent));
+  border-radius: 50%;
+  box-shadow: 0 4px 20px rgba(255, 215, 0, 0.6);
+}
+
+.tassel-end::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 35px;
+  height: 35px;
+  background: radial-gradient(circle, transparent 40%, var(--accent) 40%, var(--accent) 45%, transparent 45%);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* Cap text */
+.cap-text {
+  position: absolute;
+  bottom: -80px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  width: 300px;
+  z-index: 100;
+}
+
+.cap-title {
+  font-family: "Playfair Display", serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+  text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+}
+
+.cap-subtitle {
+  font-family: "Inter", sans-serif;
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* Hover effect */
+#diploma-wrapper:hover .graduation-cap {
+  transform: translateY(-15px) rotateX(20deg) rotateZ(-5deg);
+  animation-play-state: paused;
+}
+
+#diploma-wrapper:hover .cap-top {
+  box-shadow: 0 15px 50px rgba(255, 215, 0, 0.5), 0 0 80px rgba(255, 215, 0, 0.4), inset 0 -5px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Throw animation */
+@keyframes throwCap {
+  0% {
+    transform: translateY(0) rotateX(15deg) rotateZ(0deg) scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(-400px) rotateX(720deg) rotateZ(360deg) scale(0.8);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-800px) rotateX(1440deg) rotateZ(720deg) scale(0.3);
+    opacity: 0;
+  }
+}
+
+.graduation-cap.throwing {
+  animation: throwCap 2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+#diploma-wrapper.open {
+  opacity: 0;
+  pointer-events: none;
+}
+
+#diploma-wrapper.open .graduation-cap {
+  transform: rotateY(90deg) scale(0.5);
+  opacity: 0;
+}
+
+/* Main content container */
+.gala-container {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s ease-out 1.5s;
+  position: relative;
+  z-index: 1;
+}
+
+.gala-container.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.gala-header {
+  text-align: center;
+  padding: 2rem 1rem;
+  margin-bottom: 2rem;
+}
+
+.gala-logo {
+  width: 150px;
+  height: 150px;
+  margin: 0 auto 1.5rem;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 8px 30px rgba(255, 215, 0, 0.4), 0 0 50px rgba(255, 215, 0, 0.2);
+  border: 5px solid var(--accent);
+  display: block;
+}
+
+.gala-title {
+  font-family: "Playfair Display", serif;
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 0.5rem;
+  line-height: 1.2;
+  text-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+}
+
+.gala-subtitle {
+  font-family: "Inter", sans-serif;
+  font-size: clamp(1rem, 2.5vw, 1.2rem);
+  color: var(--text-muted);
+  font-style: italic;
+  margin-bottom: 1.5rem;
+}
+
+.decorative-line {
+  width: 100px;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  margin: 0 auto;
+  box-shadow: 0 0 10px var(--accent);
+}
+
+.graduation-ornament {
+  text-align: center;
+  font-size: 3rem;
+  margin: 2rem 0;
+  opacity: 0;
+  display: none;
+}
+
+/* Content sections with scroll animations */
+.content-section {
+  margin-bottom: 3rem;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.6s ease-out;
+}
+
+.content-section.animate-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.content-card {
+  background: var(--card-bg);
+  border-radius: 20px;
+  padding: 2.5rem;
+  box-shadow: 0 10px 40px var(--card-shadow), 0 0 30px rgba(255, 215, 0, 0.1);
+  border: 1px solid var(--border);
+  margin-bottom: 2rem;
+}
+
+.section-title {
+  font-family: "Playfair Display", serif;
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  color: var(--text);
+  margin-bottom: 1.5rem;
+  text-align: center;
+  text-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
+}
+
+.section-text {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: var(--text-muted);
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto 1.5rem;
+}
+
+.highlight-box {
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.15), rgba(255, 215, 0, 0.05));
+  border-left: 4px solid var(--accent);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-top: 2rem;
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.1);
+}
+
+.highlight-text {
+  font-size: 1.1rem;
+  color: var(--text);
+  text-align: center;
+  line-height: 1.6;
+}
+
+.highlight-text strong {
+  color: var(--accent);
+  font-weight: 700;
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+}
+
+.details-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  padding: 1rem;
+}
+
+.detail-item {
+  background: var(--card-bg);
+  border-radius: 16px;
+  padding: 2rem 1.5rem;
+  text-align: center;
+  border: 1px solid var(--border);
+  box-shadow: 0 4px 20px var(--card-shadow), 0 0 20px rgba(255, 215, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.detail-item:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 30px var(--card-shadow), 0 0 40px rgba(255, 215, 0, 0.2);
+  border-color: var(--accent-light);
+}
+
+.detail-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  display: none;
+}
+
+.detail-item h3 {
+  font-family: "Inter", sans-serif;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--accent);
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+}
+
+.detail-item p {
+  font-family: "Playfair Display", serif;
+  font-size: 1.3rem;
+  color: var(--text);
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+/* Gallery sections */
+.venue-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.venue-image {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px var(--card-shadow);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  aspect-ratio: 4 / 3;
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 215, 0, 0.05));
+}
+
+.venue-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+  opacity: 0;
+  animation: fadeInImage 0.5s ease-out forwards;
+}
+
+@keyframes fadeInImage {
+  to {
+    opacity: 1;
+  }
+}
+
+.venue-image:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 30px var(--card-shadow), 0 0 40px rgba(255, 215, 0, 0.2);
+}
+
+.venue-image:hover img {
+  transform: scale(1.1);
+}
+
+.venue-image::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.venue-image:hover::after {
+  opacity: 1;
+}
+
+.venue-image::before {
+  content: "👁️ Ver";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(255, 215, 0, 0.95);
+  color: #0a0a0f;
+  padding: 0.75rem 1.5rem;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 10;
+  pointer-events: none;
+  box-shadow: 0 4px 20px rgba(255, 215, 0, 0.6);
+}
+
+.venue-image:hover::before {
+  opacity: 1;
+}
+
+.memories-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.memory-item {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px var(--card-shadow);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  aspect-ratio: 1;
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 215, 0, 0.05));
+}
+
+.memory-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+  opacity: 0;
+  animation: fadeInImage 0.5s ease-out forwards;
+}
+
+.memory-item:nth-child(1) img {
+  animation-delay: 0.1s;
+}
+.memory-item:nth-child(2) img {
+  animation-delay: 0.2s;
+}
+.memory-item:nth-child(3) img {
+  animation-delay: 0.3s;
+}
+.memory-item:nth-child(4) img {
+  animation-delay: 0.4s;
+}
+.memory-item:nth-child(5) img {
+  animation-delay: 0.5s;
+}
+.memory-item:nth-child(6) img {
+  animation-delay: 0.6s;
+}
+.memory-item:nth-child(7) img {
+  animation-delay: 0.7s;
+}
+.memory-item:nth-child(8) img {
+  animation-delay: 0.8s;
+}
+.memory-item:nth-child(9) img {
+  animation-delay: 0.9s;
+}
+.memory-item:nth-child(10) img {
+  animation-delay: 1s;
+}
+
+.memory-item:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 25px var(--card-shadow), 0 0 30px rgba(255, 215, 0, 0.3);
+  z-index: 10;
+}
+
+.memory-item:hover img {
+  transform: scale(1.15);
+}
+
+.memory-item::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to top, rgba(255, 215, 0, 0.3), transparent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.memory-item:hover::after {
+  opacity: 1;
+}
+
+/* Lightbox for images */
+.lightbox {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.95);
+  z-index: 9999;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  backdrop-filter: blur(10px);
+}
+
+.lightbox.active {
+  display: flex;
+}
+
+.lightbox-content {
+  max-width: 90%;
+  max-height: 90%;
+  position: relative;
+  animation: zoomIn 0.3s ease-out;
+}
+
+@keyframes zoomIn {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.lightbox-content img {
+  max-width: 100%;
+  max-height: 90vh;
+  border-radius: 8px;
+  box-shadow: 0 0 50px rgba(255, 215, 0, 0.5);
+  border: 2px solid var(--accent);
+}
+
+.lightbox-close {
+  position: absolute;
+  top: -40px;
+  right: 0;
+  background: var(--accent);
+  color: #0a0a0f;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(255, 215, 0, 0.4);
+  font-weight: 300;
+  line-height: 1;
+}
+
+.lightbox-close:hover {
+  transform: scale(1.1) rotate(90deg);
+  background: var(--accent-dark);
+}
+
+/* Location section */
+.location-name {
+  font-family: "Playfair Display", serif;
+  font-size: 1.8rem;
+  color: var(--accent);
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  text-align: center;
+  text-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+}
+
+.location-address {
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.map-wrapper {
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px var(--card-shadow), 0 0 30px rgba(255, 215, 0, 0.1);
+  margin-top: 2rem;
+  border: 2px solid var(--border);
+}
+
+.map-wrapper iframe {
+  width: 100%;
+  display: block;
+}
+
+/* Footer */
+footer {
+  display: none;
+  text-align: center;
+  padding: 3rem 1rem 2rem;
+  border-top: 1px solid var(--border);
+  margin-top: 3rem;
+  width: 100%;
+  opacity: 0;
+  transition: all 0.8s ease-out 1.5s;
+  position: relative;
+  z-index: 1;
+}
+
+footer.visible {
+  display: block;
+  opacity: 1;
+}
+
+.footer-content img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+  margin-bottom: 1rem;
+}
+
+.footer-text {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+/* Music and theme controls */
+.music-control,
+.theme-toggle {
+  position: fixed;
+  bottom: 1.5rem;
+  background: var(--accent);
+  color: #0a0a0f;
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 20px rgba(255, 215, 0, 0.4), 0 0 30px rgba(255, 215, 0, 0.3);
+  transition: all 0.5s ease;
+  z-index: 990;
+  opacity: 0;
+  transform: scale(0.5) translateY(50px);
+  pointer-events: none;
+}
+
+.music-control {
+  right: 1.5rem;
+}
+
+.theme-toggle {
+  right: 6rem;
+}
+
+.music-control.visible,
+.theme-toggle.visible {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+  pointer-events: all;
+}
+
+.music-control:hover,
+.theme-toggle:hover {
+  background: var(--accent-dark);
+  transform: scale(1.1) translateY(0);
+  box-shadow: 0 6px 30px rgba(255, 215, 0, 0.6), 0 0 50px rgba(255, 215, 0, 0.5);
+}
+
+.music-control svg,
+.theme-toggle svg {
+  width: 26px;
+  height: 26px;
+  fill: currentColor;
+}
+
+.theme-transition-wave {
+  position: fixed;
+  background-color: var(--bg);
+  border-radius: 50%;
+  transform: scale(0);
+  pointer-events: none;
+  z-index: 10000;
+  width: 1px;
+  height: 1px;
+  transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+  top: 50%;
+  left: 50%;
+}
+
+.graduation-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+  color: #0a0a0f;
+  padding: 0.5rem 1.5rem;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-top: 1rem;
+  box-shadow: 0 4px 20px rgba(255, 215, 0, 0.4);
+}
+
+.section-divider {
+  text-align: center;
+  margin: 3rem 0;
+  position: relative;
+}
+
+.section-divider::before,
+.section-divider::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 30%;
+  height: 2px;
+  background: linear-gradient(to right, transparent, var(--accent), transparent);
+  box-shadow: 0 0 10px var(--accent);
+}
+
+.section-divider::before {
+  left: 0;
+}
+
+.section-divider::after {
+  right: 0;
+}
+
+.section-divider-icon {
+  font-size: 2rem;
+  display: none;
+  padding: 0 1rem;
+  background: var(--bg);
+}
+
+/* Mobile responsive styles */
+@media (max-width: 768px) {
+  /* Updated mobile styles for graduation cap */
+  .cap-container {
+    width: 350px;
+    height: 350px;
+  }
+
+  .graduation-cap {
+    width: 200px;
+    height: 200px;
+  }
+
+  .cap-top {
+    width: 160px;
+    height: 160px;
+  }
+
+  .cap-base {
+    width: 100px;
+    height: 70px;
+  }
+
+  .cap-title {
+    font-size: 1.6rem;
+  }
+
+  .cap-subtitle {
+    font-size: 1rem;
+  }
+
+  #cursor-dot,
+  #cursor-outline {
+    display: none;
+  }
+  body {
+    cursor: auto;
+  }
+  a,
+  button,
+  #diploma-wrapper,
+  .music-control,
+  .theme-toggle {
+    cursor: pointer;
+  }
+}
+
+@media (max-width: 600px) {
+  /* Updated small mobile styles for graduation cap */
+  .cap-container {
+    width: 300px;
+    height: 300px;
+  }
+
+  .graduation-cap {
+    width: 180px;
+    height: 180px;
+  }
+
+  .cap-top {
+    width: 140px;
+    height: 140px;
+  }
+
+  .cap-base {
+    width: 90px;
+    height: 60px;
+  }
+
+  .cap-title {
+    font-size: 1.4rem;
+  }
+
+  .cap-subtitle {
+    font-size: 0.9rem;
+  }
+
+  .gala-container {
+    padding: 1rem 0.5rem;
+  }
+
+  .details-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .section-title {
+    font-size: 1.5rem;
+  }
+
+  .section-text {
+    font-size: 1rem;
+  }
+
+  .memory-item {
+    border-radius: 8px;
+  }
+}
